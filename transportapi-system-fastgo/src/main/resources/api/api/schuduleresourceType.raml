@@ -1,0 +1,21 @@
+#%RAML 1.0 ResourceType
+get:
+      headers:
+        transactionId: 
+            type: string
+            required: true
+            minLength: 1
+      queryParameters:
+        
+        departureLocationCode:
+             type: string
+             required: false
+        destinationLocationCode:
+            type: string
+            required: false
+      responses:
+        200:
+          body:
+            application/json:
+              examples: !include examples/schuduleexample.raml
+                
