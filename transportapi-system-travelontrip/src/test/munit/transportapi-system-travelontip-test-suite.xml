@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<munit:config name="transportapi-system-travelontip-test-suite.xml" />
+	<http:request-config name="munit_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="5c4ba121-c2ec-466a-81bd-3fc71bad0c5c" >
+		<http:request-connection host="localhost" port="8082" />
+	</http:request-config>
+	<munit:test name="transportapi-system-travelontip-test-suite-transportapi-system-travelontip-mainTest" doc:id="94d09537-0483-499f-83dc-f2b8104c087d" description="Test">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="transportapi-system-travelontip-main" />
+			<munit:enable-flow-source value="get:\(transportType)\(transportCompany)\routes:transportapi-system-travelontip-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="24805aab-ca87-46f7-913a-caad868e3733" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="7ab4ddd3-6e7d-4199-b713-bd1fcb2e0764" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('response.json')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<http:request method="GET" doc:name="Request" doc:id="1fe6d8d6-640e-4002-a60d-044f7a2613e3" config-ref="munit_HTTP_Request_configuration" path="/api/{transportType}/{transportCompany}/routes">
+				<http:headers ><![CDATA[#[output application/java
+---
+{
+	"transactionId" : "123dntii"
+}]]]></http:headers>
+				<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"transportCompany" : "travelontrip",
+	"transportType" : "land"
+}]]]></http:uri-params>
+			</http:request>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="06eabdc8-6fcd-4e92-a497-54400b9db001" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="transportapi-system-travelontip-test-suite-transportapi-system-travelontip-mainTest1" doc:id="d824ddc3-7c1b-41d2-98c1-e9797efc8886" description="Test">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="transportapi-system-travelontip-main" />
+			<munit:enable-flow-source value="get:\(transportType)\(transportCompany)\routes:transportapi-system-travelontip-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="2a8e657e-27c8-456c-9daf-4e206d260e7e" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="b260d568-649e-4155-8b56-d83586aa6839" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('response.json')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<http:request method="GET" doc:name="Request" doc:id="fd63ed75-55d5-4a2e-a9f3-8a7ffd3d2a7d" config-ref="munit_HTTP_Request_configuration" path="/api/{transportType}/{transportCompany}/routes">
+				<http:headers ><![CDATA[#[output application/java
+---
+{
+	"transactionId" : "123dntii"
+}]]]></http:headers>
+				<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"transportCompany" : "travelontrip",
+	"transportType" : "air"
+}]]]></http:uri-params>
+			</http:request>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="40e3b49e-ad1f-41cf-85d5-f2fe25d72cff" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="transportapi-system-travelontip-test-suite-transportapi-system-travelontip-mainTest2" doc:id="2a18fc31-4197-49a5-8f74-cbd2b90a785e" description="Test">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="transportapi-system-travelontip-main" />
+			<munit:enable-flow-source value="get:\(transportType)\(transportCompany)\routes:transportapi-system-travelontip-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="0bd6ed44-1aff-43fb-8bcb-8132713ab6e3" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="89c07876-9bf1-4d9c-9651-629db9e27bdc" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('response.json')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<http:request method="GET" doc:name="Request" doc:id="76fb3e42-0d90-4990-a5af-ccb60178874a" config-ref="munit_HTTP_Request_configuration" path="/api/{transportType}/{transportCompany}/routes">
+				<http:headers ><![CDATA[#[output application/java
+---
+{
+	"transactionId" : "123dntii"
+}]]]></http:headers>
+				<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"transportCompany" : "travelontrip",
+	"transportType" : "sea"
+}]]]></http:uri-params>
+			</http:request>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="16e558a5-479c-448c-8e3b-9b9cab6dc26c" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="transportapi-system-travelontip-test-suite-transportapi-system-travelontip-mainTest3" doc:id="dd44e1d5-6bac-4be8-9fd6-477ef0e48db5" description="Test">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="transportapi-system-travelontip-main" />
+			<munit:enable-flow-source value="get:\(transportType)\(transportCompany)\routes:transportapi-system-travelontip-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="c42cafcc-0e38-44c4-999f-39f1500386c4" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="b260d568-649e-4155-8b56-d83586aa6839" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('response.json')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<http:request method="GET" doc:name="Request" doc:id="78d1c66e-9f58-4609-8ee8-781f146b95ec" config-ref="munit_HTTP_Request_configuration" path="/api/{transportType}/{transportCompany}/routes">
+				<http:headers ><![CDATA[#[output application/java
+---
+{
+	"transactionId" : "123dntii"
+}]]]></http:headers>
+				<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"transportCompany" : "travelontrip",
+	"transportType" : "sea1"
+}]]]></http:uri-params>
+			</http:request>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="7f4a2902-17e9-4525-9532-9ef30c521406" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="transportapi-system-travelontip-test-suite-transportapi-system-travelontip-mainTest4" doc:id="6ca9f025-3afc-4881-9ab9-0b8f9bf749a8" description="Test">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="transportapi-system-travelontip-main" />
+			<munit:enable-flow-source value="get:\(transportType)\(transportCompany)\routes:transportapi-system-travelontip-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="0e9469f4-dc87-496b-8332-f088f344504d" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="7ab4ddd3-6e7d-4199-b713-bd1fcb2e0764" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('response.json')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<try doc:name="Try" doc:id="cf567e1b-246c-4e06-9655-0d2fc9e1c3d4" >
+				<http:request method="GET" doc:name="Request" doc:id="629d71f5-5907-4a65-915d-95add2bd9f4c" config-ref="munit_HTTP_Request_configuration" path="/api/{transportType}/{transportCompany}/routes">
+				<http:uri-params><![CDATA[#[output application/java
+---
+{
+	"transportCompany" : "travelontrip",
+	"transportType" : "sea1"
+}]]]></http:uri-params>
+			</http:request>
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="22a13675-b574-4321-90e3-0aac75640cef" >
+						<ee:transform doc:name="Transform Message" doc:id="6005abc6-da9c-4238-ac33-d6fcb37d9686" >
+							<ee:message >
+								<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{"message": "Bad request"}]]></ee:set-payload>
+							</ee:message>
+						</ee:transform>
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="f28cf5d2-83ae-4259-b595-7293e3482aff" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="transportapi-system-travelontip-test-suite-transportapi-system-travelontip-mainTest5" doc:id="18fbd723-6dba-449d-a55f-42d121a375c1" description="Test">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="transportapi-system-travelontip-main" />
+			<munit:enable-flow-source value="get:\(transportType)\(transportCompany)\routes:transportapi-system-travelontip-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="26c4484b-b631-4607-acef-38999299ecdb" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="b260d568-649e-4155-8b56-d83586aa6839" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('response.json')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<try doc:name="Try" doc:id="3cbe07bf-2f85-445a-a310-7b8abed4083d" >
+				<http:request method="GET" doc:name="Request" doc:id="885a9730-c757-4d45-ae10-5baf1cf33ae6" config-ref="munit_HTTP_Request_configuration" path="/api/{transportType}/{transportCompany}/routes1">
+				<http:headers><![CDATA[#[output application/java
+---
+{
+	"transactionId" : "123dntii"
+}]]]></http:headers>
+				<http:uri-params><![CDATA[#[output application/java
+---
+{
+	"transportCompany" : "travelontrip",
+	"transportType" : "sea1"
+}]]]></http:uri-params>
+			</http:request>
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="d84ac3ae-2471-4ed5-bebc-ded8b631b6a2" >
+						<ee:transform doc:name="Transform Message" doc:id="41933bea-d999-45b4-b7c1-1cec556b91df" >
+							<ee:message >
+								<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{"message": "Resource not found"}]]></ee:set-payload>
+							</ee:message>
+						</ee:transform>
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="e12338c6-dd73-401e-9b15-0b8dff26b623" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="transportapi-system-travelontip-test-suite-transportapi-system-travelontip-mainTest6" doc:id="62d6c2e1-5528-4490-9df8-e4893b6d6ff5" description="Test">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="transportapi-system-travelontip-main" />
+			<munit:enable-flow-source value="get:\(transportType)\(transportCompany)\routes:transportapi-system-travelontip-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="7883120a-22d8-443b-a2ee-842e2b5d57ee" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="7ab4ddd3-6e7d-4199-b713-bd1fcb2e0764" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('response.json')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<try doc:name="Try" doc:id="3dd153b1-de48-4c8f-86c3-bff4f8969ecc" >
+				<http:request method="PATCH" doc:name="Request" doc:id="5656b7ad-5f2f-4ebb-85f5-a83413b7a36d" config-ref="munit_HTTP_Request_configuration" path="/api/{transportType}/{transportCompany}/routes" >
+					<http:headers ><![CDATA[#[output application/java
+---
+{
+	"transactionId" : "123dntii"
+}]]]></http:headers>
+					<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"transportCompany" : "travelontrip",
+	"transportType" : "sea1"
+}]]]></http:uri-params>
+				</http:request>
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="44e665a3-b640-460f-9785-26efcb88b044" >
+						<ee:transform doc:name="Transform Message" doc:id="9afd5b6e-fab9-4ade-898d-fbba1160ee74" >
+							<ee:message >
+								<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{"message": "Method not allowed"}]]></ee:set-payload>
+							</ee:message>
+						</ee:transform>
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="1de59be5-afbe-4401-87ac-43d055ecf5e3" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="transportapi-system-travelontip-test-suite-transportapi-system-travelontip-mainTest7" doc:id="94dd79c1-e96b-4d64-a8b2-0669d228708b" description="Test">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="transportapi-system-travelontip-main" />
+			<munit:enable-flow-source value="get:\(transportType)\(transportCompany)\schudule:transportapi-system-travelontip-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="9d2d00c0-51c1-4635-b253-3b50057f40d9" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="97c8f50e-6760-4616-8aef-ed5168096f0f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('response.json')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<http:request method="GET" doc:name="Request" doc:id="7387f681-7e4e-4b08-968b-4638d8542379" config-ref="munit_HTTP_Request_configuration" path="/api/{transportType}/{transportCompany}/schudule">
+				<http:headers ><![CDATA[#[output application/java
+---
+{
+	"transactionId" : "123dntii"
+}]]]></http:headers>
+				<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"transportCompany" : "travelontrip",
+	"transportType" : "land"
+}]]]></http:uri-params>
+			</http:request>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="3354cce6-dd3f-4fff-a42b-07883342ea88" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="transportapi-system-travelontip-test-suite-transportapi-system-travelontip-mainTest8" doc:id="c0596cd1-dc74-441e-a1ae-774f00210884" description="Test">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="transportapi-system-travelontip-main" />
+			<munit:enable-flow-source value="get:\(transportType)\(transportCompany)\schudule:transportapi-system-travelontip-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="42fc8e5a-6f37-4f6e-8fcb-187eab3c5499" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="8c27ae49-ea96-457e-b30d-688665abbe2e" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('response.json')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<http:request method="GET" doc:name="Request" doc:id="c5478095-2bc2-487c-a4ef-bfc909e0ad54" config-ref="munit_HTTP_Request_configuration" path="/api/{transportType}/{transportCompany}/schudule">
+				<http:headers ><![CDATA[#[output application/java
+---
+{
+	"transactionId" : "123dntii"
+}]]]></http:headers>
+				<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"transportCompany" : "travelontrip",
+	"transportType" : "land"
+}]]]></http:uri-params>
+				<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"departureLocationCode" : "HYD",
+	"destinationLocationCode" : "BLR"
+}]]]></http:query-params>
+			</http:request>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="01052593-8053-4253-a296-812b658a0948" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="transportapi-system-travelontip-test-suite-transportapi-system-travelontip-mainTest9" doc:id="8cab27ae-5702-4778-85dc-3263b744bef7" description="Test">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="transportapi-system-travelontip-main" />
+			<munit:enable-flow-source value="get:\(transportType)\(transportCompany)\schudule:transportapi-system-travelontip-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="9e536317-60e5-43eb-97c4-944732b6cd8c" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="637ac8cc-bd3a-4d3c-949e-33801285de95" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('response.json')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<http:request method="GET" doc:name="Request" doc:id="c1028278-39cd-4032-aa2b-d215b4ce55cd" path="/api/{transportType}/{transportCompany}/schudule" config-ref="munit_HTTP_Request_configuration">
+				<http:headers ><![CDATA[#[output application/java
+---
+{
+	"transactionId" : "123dntii"
+}]]]></http:headers>
+				<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"transportCompany" : "travelontrip",
+	"transportType" : "air"
+}]]]></http:uri-params>
+				<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"departureLocationCode" : "HYD",
+	"destinationLocationCode" : "BLR"
+}]]]></http:query-params>
+			</http:request>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="55591cdf-68a2-477a-95cf-597f1e58fb08" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="transportapi-system-travelontip-test-suite-transportapi-system-travelontip-mainTest10" doc:id="85523de1-2119-4043-8ff1-aef27e12cea6" description="Test">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="transportapi-system-travelontip-main" />
+			<munit:enable-flow-source value="get:\(transportType)\(transportCompany)\schudule:transportapi-system-travelontip-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="6f60c7bc-ef41-4a1d-8685-a0a810ec0201" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="637ac8cc-bd3a-4d3c-949e-33801285de95" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('response.json')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<http:request method="GET" doc:name="Request" doc:id="eb5a8005-35af-4a75-b86e-6921d5d151c3" config-ref="munit_HTTP_Request_configuration" path="/api/{transportType}/{transportCompany}/schudule">
+				<http:headers ><![CDATA[#[output application/java
+---
+{
+	"transactionId" : "123dntii"
+}]]]></http:headers>
+				<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"transportCompany" : "travelontrip",
+	"transportType" : "air"
+}]]]></http:uri-params>
+				<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"departureLocationCode" : "HYD1",
+	"destinationLocationCode" : "BLR1"
+}]]]></http:query-params>
+			</http:request>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="0ad3fe7e-df61-40f0-a41f-74d27c7d5419" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="transportapi-system-travelontip-test-suite-transportapi-system-travelontip-mainTest11" doc:id="203ee458-50bd-444b-ac62-588113e624f0" description="Test">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="transportapi-system-travelontip-main" />
+			<munit:enable-flow-source value="get:\(transportType)\(transportCompany)\schudule:transportapi-system-travelontip-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="84a45f7b-c1f8-4128-9942-22e84fd0d275" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="7e05ad81-d0da-43c5-b409-8a996c482a60" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('response.json')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<http:request method="GET" doc:name="Request" doc:id="36b497cc-ef6d-448f-a6de-ce91612682fd" config-ref="munit_HTTP_Request_configuration" path="/api/{transportType}/{transportCompany}/schudule">
+				<http:headers ><![CDATA[#[output application/java
+---
+{
+	"transactionId" : "123dntii"
+
+	}]]]></http:headers>
+				<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"transportCompany" : "travelontrip",
+	"transportType" : "sea"
+}]]]></http:uri-params>
+				<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"departureLocationCode" : "HYD",
+	"destinationLocationCode" : "BLR"
+}]]]></http:query-params>
+			</http:request>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="ca0faa08-14a0-4570-88b3-65dfa712c5f0" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
